@@ -1,6 +1,10 @@
-= mcspoofy
+mcSpoofy
+========
+makes spoofing mac addresses a breeze.
 
-Describe your project here
+example:
+`mcspoofy list`
+to get all avalible devices to spoof and their coresponding mac addresses
 
-:include:mcspoofy.rdoc
-
+`mcspoofy set en0 3c:d1:c3:e5:a3:ds`
+sets the mac address of en0 to 3c:d1:c3:e5:a3:ds
