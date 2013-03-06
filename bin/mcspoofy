@@ -1,0 +1,74 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+require 'gli'
+require 'mcspoofy'
+
+include GLI::App
+
+program_desc 'Easily spoof your MAC address'
+
+version Mcspoofy::VERSION
+
+
+desc 'List available device interfaces and MAC addresses '
+command :list do |c|
+
+  c.action do |global_options,options,args|
+
+    puts 'Interfaces: '
+    interfaces = `ifconfig -l`.split( )
+    interfaces.each do |interface|
+      mac = `ifconfig #{interface} | grep ether`.gsub(/ether/,'')
+      unless mac.empty?
+        puts "#{interface}: #{mac}"
+      end
+    end
+  end
+end
+
+desc 'Set MAC address to specified MAC address, Example: en0 6c:d1:c3:e5:s3:db '
+arg_name 'Interface, MAC-address'
+command :set do |c|
+  c.action do |global_options,options,args|
+    interface = args.first
+    mac = args.last
+    ("Hello"=~/^[A-Z][a-z]+$/)
+    if (mac =~ /([0-9A-F]{2}[:-]){5}([0-9A-F]{2})/i)
+      # Set old MAC address to tempvariable
+      `sudo ifconfig #{interface} ether #{mac}`
+    end
+    puts "Now spoofing #{interface} with MAC address #{mac}"
+  end
+end
+
+desc 'Reset to old MAC address'
+arg_name 'Describe arguments to reset here'
+command :reset do |c|
+  c.action do |global_options,options,args|
+    puts "TODO: temporary variable with old MAC address"
+    puts "Restart computer to reset MAC address"
+  end
+end
+
+pre do |global,command,options,args|
+  # Pre logic here
+  # Return true to proceed; false to abort and not call the
+  # chosen command
+  # Use skips_pre before a command to skip this block
+  # on that command only
+  true
+end
+
+post do |global,command,options,args|
+  # Post logic here
+  # Use skips_post before a command to skip this
+  # block on that command only
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+exit run(ARGV)

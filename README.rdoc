@@ -1,0 +1,6 @@
+= mcspoofy
+
+Describe your project here
+
+:include:mcspoofy.rdoc
+
