@@ -2,7 +2,7 @@
 # encoding: utf-8
 require 'gli'
 require 'mcspoofy'
-
+require "highline/import"
 include GLI::App
 
 program_desc 'Easily spoof your MAC address'
@@ -35,7 +35,8 @@ command :set do |c|
     ("Hello"=~/^[A-Z][a-z]+$/)
     if (mac =~ /([0-9A-F]{2}[:-]){5}([0-9A-F]{2})/i)
       # Set old MAC address to tempvariable
-      `sudo ifconfig #{interface} ether #{mac}`
+     pass = ask('Requires sudo: '){|q|q.echo = '*'}
+      `echo #{pass} | sudo ifconfig #{interface} ether #{mac}`
     end
     puts "Now spoofing #{interface} with MAC address #{mac}"
   end
